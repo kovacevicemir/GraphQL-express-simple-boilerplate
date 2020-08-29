@@ -1,0 +1,67 @@
+1. npm init -y create package.json
+2. Dependencies: express,nodemon
+3. App.js setup
+4. Schemas & Resolvers
+-npm i express-graphql (middleware -> points at schemas and resolvers & route reqs.)
+-npm i graphql (define the schema)
+5. const { graphqlHTTP } = require('express-graphql');
+this basically links everything, schemas,routes,queries etc.
+6. const { buildSchema } = require('graphql')
+this convert `schema string...` into object.
+7. now just have to create Schema query: mutation:
+and create type RootQuery with all queries
+and create type RootMutation with all other queries
+This everything is under graphqlHttp
+8. It looks like this so far:
+
+app.use('/graphql', graphqlHTTP({
+        //graphql schema
+        // RootQuery-> endpoints same as RootMutation
+        schema: buildSchema(`
+            type RootQuery{
+                events: [String!]!
+            }
+
+            type RootMutation{
+                createEvent(name: String): String
+            }
+
+            schema {
+                query:RootQuery
+                mutation:RootMutation
+            }
+        `),
+
+        // all resolver functions
+        rootValue: {
+            events: () => {
+                return ['Romantic cooking','Sailing','coding']
+            }
+        }
+    })
+)
+
+9. Now we add all logic in rootValue (resolver)
+// all resolver functions
+rootValue: {
+    events: () => {
+        return ['Romantic cooking','Sailing','coding']
+    },
+    createEvent: (args) => {
+        const eventName = args.name;
+        return eventName;
+    }
+}
+
+10. http://localhost:3000/graphql should have UI now
+to get all events:
+
+query{
+    events
+}
+
+to create event:
+
+mutation{
+    createEvent(name:"new event")
+}
