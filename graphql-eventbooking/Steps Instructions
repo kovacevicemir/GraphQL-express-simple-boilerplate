@@ -65,3 +65,12 @@ to create event:
 mutation{
     createEvent(name:"new event")
 }
+
+
+11. Add types (models), input(model input)
+example query:
+mutation{
+  createEvent(
+    eventInput:{title:"test222",description:"jgfhdhd",price:99.00,date:"hhh"}
+  ){title}
+}
