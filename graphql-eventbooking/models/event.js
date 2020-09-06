@@ -18,6 +18,11 @@ const eventSchema = new Schema({
     date:{
         type:Date,
         required:true
+    },
+    //relation user/event -> id(of event), and ref to User
+    creator:{
+        type:Schema.Types.ObjectId,
+        ref:'User'
     }
 });
 
